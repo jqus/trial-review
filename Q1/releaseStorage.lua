@@ -10,7 +10,12 @@
 local function releaseStorage(playerId)
     local player = Player(playerId)
     if player then
-        player:setStorageValue(1000, -1)
+        local currentStorage = player:getStorageValue(1000)
+        if currentStorage == -1 then
+            player:setStorageValue(1000, playerId)
+        elseif currentStorage ~= playerId then
+            player:setStorageValue(1000, -1)
+        end
     end
 end
 
