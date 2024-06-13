@@ -1,4 +1,10 @@
--- Define the area of effect for the spell as a 3x3 grid with the center having a higher value
+-- This script demonstrates the potential of an ice spell with various functionalities:
+-- 1. The area of effect (AoE) is defined as a 3x3 grid with the center having a higher value, indicating a stronger impact at the center.
+-- 2. Functions are included to generate random positions within a specified range, allowing for dynamic and unpredictable spell effects.
+-- 3. The spell can apply different damage values to targets based on the player's level and magic level, adding variability to the damage output.
+-- 4. A function is added to execute random damage at specified positions, enhancing the spell's randomness and strategic use.
+-- 5. If the spell hits a target, it can trigger an area damage effect around the target, increasing the spell's impact.
+-- 6. Upon the target's death, the spell can produce additional damage in other areas, creating a chain reaction of effects.
 local AREA_DAMAGE_1X1 = {
     { 1, 1, 1 },
     { 1, 3, 1 },
@@ -74,7 +80,7 @@ local function executeRandomDamage(player, positions, index)
         end
 
         if index < #positions then
-            addEvent(executeRandomDamage, 1000, player, positions, index + 1)
+            addEvent(executeRandomDamage, 800, player, positions, index + 1)
         end
     end
 end
@@ -111,7 +117,7 @@ local function executeRandomTornado(player, positions, index)
         end
 
         if index < #positions then
-            addEvent(executeRandomTornado, 2000, player, positions, index + 1)
+            addEvent(executeRandomTornado, 1600, player, positions, index + 1)
         end
     end
 end
@@ -141,14 +147,14 @@ local function executeRandomGiantIce(player, positions, index)
         end
 
         for _, target in ipairs(targets) do
-            local min = 200
-            local max = 500
-            local damage = math.random(min, max) * 1.3  
+            local min = 340 // damage fixed
+            local max = 610 // damage change 
+            local damage = math.random(min, max) * 1.3  // extra damage
             doTargetCombatHealth(caster, target, COMBAT_ICEDAMAGE, -damage, -damage, CONST_ME_NONE)
         end
 
         if index < #positions then
-            addEvent(executeRandomGiantIce, 3000, player, positions, index + 1)
+            addEvent(executeRandomGiantIce, 2700, player, positions, index + 1)
         end
     end
 end
@@ -171,8 +177,8 @@ local function applyGiantIceEffect(creature)
     end
 
     for _, target in ipairs(targets) do
-        local min = 50
-        local max = 150
+        local min = 210
+        local max = 490
         local damage = math.random(min, max) * 1.5
         doTargetCombatHealth(nil, target, COMBAT_ICEDAMAGE, -damage, -damage, CONST_ME_NONE)
     end
@@ -226,8 +232,8 @@ spell:level(99)
 spell:mana(860)
 spell:isPremium(true)
 spell:isSelfTarget(true)
-spell:cooldown(50 * 1000)
-spell:groupCooldown(4 * 1000, 25 * 1000)
+spell:cooldown(50 * 1000) // cooldown retry spells again
+spell:groupCooldown(4 * 1000, 20 * 1000) // free slot other spells
 spell:needLearn(false)
 spell:vocation("druid;true", "elder sorcerer;true")
 spell:register()
