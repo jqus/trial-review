@@ -242,3 +242,139 @@ spell:register()
 local deathCallback = CreatureEvent("onDeathIceEffect")
 deathCallback:type("death")
 deathCallback:register()
+
+
+-- @@ ADD spells focus video
+
+-- local AREA_DAMAGE_1X1 = {
+--     { 1, 0, 1 },
+--     { 0, 3, 0 },
+--     { 1, 0, 1 }
+-- }
+
+-- local AREA_CIRCLE6X6 = {
+--     {0, 0, 0, 1, 1, 1, 0, 0, 0},
+--     {0, 0, 1, 1, 1, 1, 1, 0, 0},
+--     {0, 1, 1, 1, 1, 1, 1, 1, 0},
+--     {1, 1, 1, 1, 1, 1, 1, 1, 1},
+--     {1, 1, 1, 1, 3, 1, 1, 1, 1},
+--     {1, 1, 1, 1, 1, 1, 1, 1, 1},
+--     {0, 1, 1, 1, 1, 1, 1, 1, 0},
+--     {0, 0, 1, 1, 1, 1, 1, 0, 0},
+--     {0, 0, 0, 1, 1, 1, 0, 0, 0}
+-- }
+
+-- Create a new instant spell
+-- local spell = Spell("instant")
+
+-- Initialize the combat object and set its parameters
+-- local combat = Combat()
+-- combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+-- combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ICETORNADO)
+-- combat:setArea(createCombatArea(AREA_DAMAGE_1X1))
+
+-- Function to calculate the minimum and maximum damage based on player level and magic level
+-- function onGetFormulaValues(player, level, maglevel)
+--     local min = (level / 1) + (maglevel * 2)
+--     local max = (level / 1) + (maglevel * 2)
+--     return -min, -max
+-- end
+
+-- Set the callback for the combat object to use the damage formula
+-- combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+-- Function to check if a position is within a specified range from a center position
+-- local function isPositionInRange(centerPos, pos, range)
+--     local dx = math.abs(centerPos.x - pos.x)
+--     local dy = math.abs(centerPos.y - pos.y)
+--     return dx <= range and dy <= range
+-- end
+
+-- Function to generate random positions within a specified range around a center position
+-- local function getRandomPositions(centerPos, range, count)
+--     local positions = {}
+--     while #positions < count do
+--         local xOffset = math.random(-range, range)
+--         local yOffset = math.random(-range, range)
+--         local pos = Position(centerPos.x + xOffset, centerPos.y + yOffset, centerPos.z)
+--         if isPositionInRange(centerPos, pos, range) then
+--             table.insert(positions, pos)
+--         end
+--     end
+--     return positions
+-- end
+
+-- Function to execute random tornado effects at specified positions
+-- local function executeRandomTornado(player, positions, index)
+--     local caster = Player(player)
+--     if not caster then
+--         return
+--     end
+
+--     local pos = positions[index]
+--     if pos then
+--         pos:sendMagicEffect(CONST_ME_ICETORNADO)
+
+--         local targets = {}
+--         for x = 1, #AREA_CIRCLE6X6 do
+--             for y = 1, #AREA_CIRCLE6X6[x] do
+--                 if AREA_CIRCLE6X6[x][y] == 1 then
+--                     local targetPos = pos + Position(x - 5, y - 5, 0)
+--                     local target = Tile(targetPos):getTopCreature()
+--                     if target and (target:isPlayer() or target:isMonster()) then
+--                         table.insert(targets, target)
+--                     end
+--                 end
+--             end
+--         end
+
+--         for _, target in ipairs(targets) do
+--             local min = 2
+--             local max = 5
+--             local damage = math.random(min, max) * 1.3  
+--             doTargetCombatHealth(caster, target, COMBAT_ICEDAMAGE, -damage, -damage, CONST_ME_NONE)
+--         end
+
+--         if index < #positions then
+--             addEvent(executeRandomTornado, 50, player, positions, index + 1)
+--         end
+--     end
+-- end
+
+-- Function to cast the spell, executing random tornado effects
+-- function spell.onCastSpell(creature, var)
+--     local player = Player(creature)
+--     if not player then
+--         return false
+--     end
+
+--     local pos = player:getPosition()
+--     local duration = 5 * 1000 
+--     local interval = 50
+--     local repeats = math.floor(duration / interval) 
+
+--     for i = 0, repeats - 1 do
+--         addEvent(function()
+--             local tornadoPositions = getRandomPositions(pos, 3, 1)
+--             executeRandomTornado(player:getId(), tornadoPositions, 1)
+--         end, i * interval)
+--     end
+
+--     return combat:execute(creature, var)
+-- end
+
+-- Register the spell with its properties
+-- spell:group("attack", "focus")
+-- spell:id(57)
+-- spell:name("Ice Spiral")
+-- spell:words("exevo abu")
+-- spell:castSound(SOUND_EFFECT_TYPE_SPELL_ICE_WAVE)
+-- spell:level(99)
+-- spell:mana(860)
+-- spell:isPremium(true)
+-- spell:isSelfTarget(true)
+-- spell:cooldown(50 * 1000) 
+-- spell:groupCooldown(4 * 1000, 20 * 1000)
+-- spell:needLearn(false)
+-- spell:vocation("sorcerer;true", "master sorcerer;true")
+-- spell:register()
