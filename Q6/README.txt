@@ -25,3 +25,7 @@ Uses and Features of @dash.lua:
    - **Resource Cost**: The slide spell can be configured to consume a specific resource (e.g., mana, stamina) when used.
    - **Diagonal Dash**: The script can be extended to allow diagonal dashes, providing more movement options for players.
 */
+
+
+// This script has variants that can be removed or conditioned, such as passing through familiars, creatures, and NPCs. 
+// It also includes protection in safe zones to prevent traps in depots.
